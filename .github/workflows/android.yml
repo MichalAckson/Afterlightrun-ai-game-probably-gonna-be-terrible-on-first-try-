@@ -56,7 +56,12 @@ jobs:
           fi
           echo "$GODOT_VERSION.stable" > "$TEMPLATE_DIR/version.txt"
       - name: Import and validate project scripts
-        run: Godot_v$GODOT_VERSION-stable_linux.x86_64 --headless --editor --path . --quit
+        run: |
+          set -o pipefail
+          Godot_v$GODOT_VERSION-stable_linux.x86_64 --headless --editor --path . --quit 2>&1 | tee godot-import.log
+          if grep -E "SCRIPT ERROR|Parse Error|Failed to load script" godot-import.log; then
+            exit 1
+          fi
       - name: Export ARM64 Android debug APK
         run: |
           export ANDROID_SDK_ROOT="$ANDROID_HOME"

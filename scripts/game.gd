@@ -110,7 +110,7 @@ func _make_city() -> void:
 		_static_box(Vector3(0.18,0.025,4.4),Vector3(0,0.115,z),Color(0.88,0.82,0.67),false)
 	for z in range(-175,105,28):
 		for side in [-1.0,1.0]:
-			var x := side*randf_range(18.0,31.0)
+			var x: float = float(side) * randf_range(18.0,31.0)
 			var h := randf_range(12.0,35.0)
 			var dims := Vector3(randf_range(8.0,13.0),h,randf_range(10.0,18.0))
 			var color := Color(randf_range(0.19,0.37),randf_range(0.23,0.38),randf_range(0.31,0.48))
