@@ -58,9 +58,9 @@ func _apply_suspension() -> void:
 	var forward := -global_transform.basis.z.normalized()
 	var right := global_transform.basis.x.normalized()
 	var steer := steer_input * MAX_STEER * clampf(1.0 - absf(last_speed) / 75.0, 0.35, 1.0)
-	var anchors := [Vector3(-0.82,-0.12,-1.14),Vector3(0.82,-0.12,-1.14),Vector3(-0.82,-0.12,1.14),Vector3(0.82,-0.12,1.14)]
+	var anchors: Array[Vector3] = [Vector3(-0.82,-0.12,-1.14),Vector3(0.82,-0.12,-1.14),Vector3(-0.82,-0.12,1.14),Vector3(0.82,-0.12,1.14)]
 	for i in range(4):
-		var origin := global_transform * anchors[i]
+		var origin: Vector3 = global_transform * anchors[i]
 		var query := PhysicsRayQueryParameters3D.create(origin, origin - up * (REST + TRAVEL + WHEEL_RADIUS))
 		query.exclude = [get_rid()]
 		query.collision_mask = 1
@@ -68,7 +68,7 @@ func _apply_suspension() -> void:
 		if hit.is_empty():
 			continue
 		var point: Vector3 = hit.position
-		var length_now := origin.distance_to(point) - WHEEL_RADIUS
+		var length_now: float = origin.distance_to(point) - WHEEL_RADIUS
 		var compression := clampf(REST - length_now, 0.0, TRAVEL)
 		var velocity_at_point := linear_velocity + angular_velocity.cross(point - global_position)
 		var normal_force := maxf(0.0, compression * SPRING - velocity_at_point.dot(up) * DAMPER)
