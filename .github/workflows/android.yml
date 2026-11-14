@@ -26,7 +26,9 @@ jobs:
           distribution: temurin
           java-version: '17'
       - name: Set up Android SDK
-        uses: android-actions/setup-android@v3
+        uses: android-actions/setup-android@v4
+        with:
+          packages: 'platform-tools'
       - name: Generate original assets
         run: |
           sudo apt-get update
@@ -34,8 +36,7 @@ jobs:
           python3 tools/generate_assets.py
       - name: Install Android platform and build tools
         run: |
-          sdkmanager --install "platform-tools" "platforms;android-35" "build-tools;35.0.0"
-          yes | sdkmanager --licenses >/dev/null
+          sdkmanager --install "platforms;android-35" "build-tools;35.0.0"
       - name: Download Godot stable
         run: |
           curl -fL --retry 3 -o godot.zip "https://github.com/godotengine/godot/releases/download/$GODOT_VERSION-stable/Godot_v$GODOT_VERSION-stable_linux.x86_64.zip"
